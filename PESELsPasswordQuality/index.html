@@ -1,1 +1,293 @@
+<!DOCTYPE html>
+<html lang="pl">
+    <head>
+        <title>Jakość hasła typu numer PESEL</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="description" content="Biblioteka powstała do projektu naukowego. Generuje i waliduje numer PESEL, tworzy listę numerów PESEL, a także sprawdza siłę hasła">
+        <meta name="author" content="mjusPL">
+        <meta name="version" content="v=1.0">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+	    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <link rel="stylesheet" href="css\mini-default.min.css">
+        <style>
+            textarea {font-family: monospace, monospace !important;}
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12"><h1>Jakość hasła typu numer PESEL <small>i inne narzędzia z nim związane</small></h1></div>
+            </div>
+        </div>
+        
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12 col-md-12 col-lg-6">
+                    <h2><span class="icon-settings"></span>Wybierz narzędzie:</h2>
+                    <div class="collapse">
+                        <input type="radio" name="tab-group" id="tab1" checked aria-hidden="true">
+                        <label for="tab1" aria-hidden="true"><h4><span class="icon-bookmark"></span>1. Generowanie PESEL</h4></label>
+                        <div>
+                            <p>Generowanie pojedynczego numeru PESEL.</p>
+                            <p><strong>W przypadku błędnie wprowadzonych lat losowy numer przyjmuje te wartości w zakresie od 1800 do 2299</strong></p>
+                            <form>
+                                <fieldset>
+                                    <legend class="doc">Parametryzowane:</legend>
+                                    <div class="row responsive-label">
+                                        <div class="col-sm-12 col-md-12 col-lg-3">
+                                            <label for="sf1-date" class="doc">Data</label>
+                                        </div>
+                                        <div class="col-sm-12 col-md-12 col-lg">
+                                            <input type="date" placeholder="data w formacie RRRR.MM.DD" id="sf1-date" style="width:85%;" class="doc">
+                                        </div>
+                                    </div>
+                                    <div class="row responsive-label">
+                                        <div class="col-sm-12 col-md-3">
+                                            <label for="sf1-text" class="doc">Numer porządkowy</label>
+                                        </div>
+                                        <div class="col-sm-12 col-md">
+                                            <input type="text" autocomplete="off" maxlength="4" minlength="4" pattern="[0-9]{4}" placeholder="numer porządkowy w formacie NNNN" id="sf1-text" style="width:85%;" class="doc">
+                                        </div>
+                                    </div>
+                                    <input type="submit" id="genPeselParam" class="primary" value="Wykonaj" />
+                                </fieldset>
+                            </form>
+                            <form>
+                                <fieldset>
+                                    <legend class="doc">Losowy:</legend>
+                                    <div class="row responsive-label">
+                                        <div class="col-sm-12 col-md-12 col-lg-3">
+                                            <label for="sf1-dateFrom" class="doc">Rok od:</label>
+                                        </div>
+                                        <div class="col-sm-12 col-md-12 col-lg">
+                                            <input type="text" maxlength="4" minlength="4" min="1800" max="2299" pattern="((18|19|20|21|22)[0-9][0-9])" placeholder="RRRR" id="sf1-dateFrom" style="width:85%;" class="doc">
+                                        </div>
+                                    </div>
+                                    <div class="row responsive-label">
+                                        <div class="col-sm-12 col-md-12 col-lg-3">
+                                            <label for="sf1-dateTo" class="doc">Rok do:</label>
+                                        </div>
+                                        <div class="col-sm-12 col-md-12 col-lg">
+                                            <input type="text" maxlength="4" minlength="4" min="1800" max="2299" pattern="((18|19|20|21|22)[0-9][0-9])" placeholder="RRRR" id="sf1-dateTo" style="width:85%;" class="doc">
+                                        </div>
+                                    </div>
+                                    <input type="submit" id="genPeselRandom" class="primary" value="Wykonaj" />
+                                </fieldset>
+                            </form>
+                        </div>
 
+                        <input type="radio" name="tab-group" id="tab2" aria-hidden="true">
+                        <label for="tab2" aria-hidden="true"><h4><span class="icon-bookmark"></span>2. Narzędzia PESEL</h4></label>
+                        <div>
+                            <p>Walidacja, pobranie daty urodzenia oraz płci.</p>
+                            <form>
+                                <fieldset>
+                                    <legend class="doc">Podaj numer PESEL:</legend>
+                                    <div class="row responsive-label">
+                                        <div class="col-sm-12 col-md-12 col-lg-3">
+                                            <label for="sf2-pesel" class="doc">PESEL:</label>
+                                        </div>
+                                        <div class="col-sm-12 col-md-12 col-lg">
+                                            <input type="text" autocomplete="off" maxlength="11" minlength="11" pattern="[0-9]{11}" placeholder="Pełny numer PESEL" id="sf2-pesel" style="width:85%;" class="doc">
+                                        </div>
+                                    </div>
+                                    <input type="submit" id="PeselInfo" class="primary" value="Wykonaj" />
+                                </fieldset>
+                            </form>
+                            <p>Generowanie sumy kontrolnej.</p>
+                            <form>
+                                <fieldset>
+                                    <legend class="doc">Podaj numer PESEL:</legend>
+                                    <div class="row responsive-label">
+                                        <div class="col-sm-12 col-md-12 col-lg-3">
+                                            <label for="sf2-pesel10" class="doc">PESEL:</label>
+                                        </div>
+                                        <div class="col-sm-12 col-md-12 col-lg">
+                                            <input type="text" autocomplete="off" maxlength="10" minlength="10" pattern="[0-9]{10}" placeholder="10 cyfr numeru PESEL" id="sf2-pesel10" style="width:85%;" class="doc">
+                                        </div>
+                                    </div>
+                                    <input type="submit" id="PeselControl" class="primary" value="Wykonaj" />
+                                </fieldset>
+                            </form>
+                        </div>
+
+                        <input type="radio" name="tab-group" id="tab3" aria-hidden="true">
+                        <label for="tab3" aria-hidden="true"><h4><span class="icon-bookmark"></span>3. Kombinacje numeru PESEL</h4></label>
+                        <div>
+                            <p>Oblicza ilość możliwych kombinacji numeru PESEL dla danego zakresu danych.</p>
+                            <form>
+                                <div class="row responsive-label">
+                                    <div class="col-sm-12 col-md-12 col-lg-3">
+                                        <label for="sf3-gender" class="doc">Płeć znana:</label>
+                                    </div>
+                                    <div class="col-sm-12 col-md-12 col-lg">
+                                        <input type="checkbox" autocomplete="off" id="sf3-gender" class="doc">
+                                    </div>
+                                </div>
+                                <div class="row responsive-label">
+                                    <div class="col-sm-12 col-md-12 col-lg-3">
+                                        <label for="sf3-dateFrom" class="doc">Data od:</label>
+                                    </div>
+                                    <div class="col-sm-12 col-md-12 col-lg">
+                                        <input type="date" placeholder="data w formacie RRRR.MM.DD" id="sf3-dateFrom" style="width:85%;" class="doc">
+                                    </div>
+                                </div>
+                                <div class="row responsive-label">
+                                    <div class="col-sm-12 col-md-12 col-lg-3">
+                                        <label for="sf3-dateTo" class="doc">Data do:</label>
+                                    </div>
+                                    <div class="col-sm-12 col-md-12 col-lg">
+                                        <input type="date" placeholder="data w formacie RRRR.MM.DD" id="sf3-dateTo" style="width:85%;" class="doc">
+                                    </div>
+                                </div>
+                                <input type="submit" id="PeselCombination" class="primary" value="Wykonaj" />
+                            </form>
+                        </div>
+
+                        <input type="radio" name="tab-group" id="tab4" aria-hidden="true">
+                        <label for="tab4" aria-hidden="true"><h4><span class="icon-bookmark"></span>4. Generator list numerów PESEL</h4></label>
+                        <div>
+                            <p>Przykład generowania list numerów PESEL. <strong>Uwaga!</strong> Umożliwia wygenerowanie wyłącznie dla jednego miesiąca wybranego roku.</p>
+                            <p><em>Wartości Prefiks oraz Sufiks mogą być puste - ułatwiają one utworzenie właściwego słownika.</em></p>
+                            <form>
+                                <div class="row responsive-label">
+                                    <div class="col-sm-12 col-md-12 col-lg-3">
+                                        <label for="sf4-date" class="doc">Rok:</label>
+                                    </div>
+                                    <div class="col-sm-12 col-md-12 col-lg">
+                                        <input type="text" autocomplete="off" maxlength="4" minlength="4" min="1800" max="2299" pattern="((18|19|20|21|22)[0-9][0-9])" placeholder="RRRR" id="sf4-date" style="width:85%;" class="doc">
+                                    </div>
+                                </div>
+                                <div class="row responsive-label">
+                                    <div class="col-sm-12 col-md-3">
+                                        <label for="sf4-month" class="doc">Miesiąc:</label>
+                                    </div>
+                                    <div class="col-sm-12 col-md">
+                                        <select id="sf4-month" style="width:85%;" class="doc">
+                                            <option value="0">Styczeń</option>
+                                            <option value="1">Luty</option>
+                                            <option value="2">Marzec</option>
+                                            <option value="3">Kwiecień</option>
+                                            <option value="4">Maj</option>
+                                            <option value="5">Czerwiec</option>
+                                            <option value="6">Lipiec</option>
+                                            <option value="7">Sierpień</option>
+                                            <option value="8">Wrzesień</option>
+                                            <option value="9">Październik</option>
+                                            <option value="10">Listopad</option>
+                                            <option value="11">Grudzień</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row responsive-label">
+                                    <div class="col-sm-12 col-md-3">
+                                        <label for="sf4-gender" class="doc">Płeć:</label>
+                                    </div>
+                                    <div class="col-sm-12 col-md">
+                                        <select id="sf4-gender" style="width:85%;" class="doc">
+                                            <option value="A">Dowolna</option>
+                                            <option value="M">Mężczyzna</option>
+                                            <option value="F">Kobieta</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row responsive-label">
+                                    <div class="col-sm-12 col-md-3">
+                                        <label for="sf4-prefix" class="doc">Prefiks</label>
+                                    </div>
+                                    <div class="col-sm-12 col-md">
+                                        <input type="text" autocomplete="off" placeholder="prefiks np. AA." id="sf4-prefix" style="width:85%;" class="doc">
+                                    </div>
+                                </div>
+                                <div class="row responsive-label">
+                                    <div class="col-sm-12 col-md-3">
+                                        <label for="sf4-suffix" class="doc">Sufiks</label>
+                                    </div>
+                                    <div class="col-sm-12 col-md">
+                                        <input type="text" autocomplete="off" placeholder="sufiks np. .123" id="sf4-suffix" style="width:85%;" class="doc">
+                                    </div>
+                                </div>
+                                <input type="submit" id="genPeselList" class="primary" value="Wykonaj" />
+                            </form>
+                        </div>
+
+                        <input type="radio" name="tab-group" id="tab5" aria-hidden="true">
+                        <label for="tab5" aria-hidden="true"><h4><span class="icon-bookmark"></span>5. Walidator haseł</h4></label>
+                        <div>
+                            <p>Hasła nie są nigdzie zapisywane, ani przesyłane.</p>
+                            <form>
+                                <div class="row responsive-label">
+                                    <div class="col-sm-12 col-md-12 col-lg-3">
+                                        <label for="sf5-haslo" class="doc">Hasło:</label>
+                                    </div>
+                                    <div class="col-sm-12 col-md-12 col-lg">
+                                        <input type="password" autocomplete="off" placeholder="hasło" id="sf5-haslo" style="width:85%;" class="doc">
+                                    </div>
+                                </div>
+                                <input type="submit" id="PassCheck" class="primary" value="Wykonaj" />
+                            </form>
+                        </div>
+
+                        <input type="radio" name="tab-group" id="tab6" aria-hidden="true">
+                        <label for="tab6" aria-hidden="true"><h4><span class="icon-bookmark"></span>6. Obliczanie entropii hasła</h4></label>
+                        <div>
+                            <p>Proszę podać ilość znaków z każdej z grup.</p>
+                            <p><strong>Hasło jest bezpieczne, jeśli entropia wynosi powyżej 50 bitów.</strong></p>
+                            <form>
+                                <div class="row responsive-label">
+                                    <div class="col-sm-12 col-md-12 col-lg-3">
+                                        <label for="sf6-lower" class="doc">małe litery:</label>
+                                    </div>
+                                    <div class="col-sm-12 col-md-12 col-lg">
+                                        <input type="text" autocomplete="off" maxlength="4" pattern="[0-9]{0,4}" placeholder="małe litery" id="sf6-lower" value="0" style="width:85%;" class="doc">
+                                    </div>
+                                </div>
+                                <div class="row responsive-label">
+                                    <div class="col-sm-12 col-md-12 col-lg-3">
+                                        <label for="sf6-upper" class="doc">duże litery:</label>
+                                    </div>
+                                    <div class="col-sm-12 col-md-12 col-lg">
+                                        <input type="text" autocomplete="off" maxlength="4" pattern="[0-9]{0,4}" placeholder="duże litery" id="sf6-upper" value="0" style="width:85%;" class="doc">
+                                    </div>
+                                </div>
+                                <div class="row responsive-label">
+                                    <div class="col-sm-12 col-md-12 col-lg-3">
+                                        <label for="sf6-digit" class="doc">cyfry:</label>
+                                    </div>
+                                    <div class="col-sm-12 col-md-12 col-lg">
+                                        <input type="text" autocomplete="off" maxlength="4" pattern="[0-9]{0,4}" placeholder="cyfry" id="sf6-digit" value="0" style="width:85%;" class="doc">
+                                    </div>
+                                </div>
+                                <div class="row responsive-label">
+                                    <div class="col-sm-12 col-md-12 col-lg-3">
+                                        <label for="sf6-special" class="doc">znaki specjalne:</label>
+                                    </div>
+                                    <div class="col-sm-12 col-md-12 col-lg">
+                                        <input type="text" autocomplete="off" maxlength="4" pattern="[0-9]{0,4}" placeholder="znaki specjalne" id="sf6-special" value="0" style="width:85%;" class="doc">
+                                    </div>
+                                </div>
+                                <input type="submit" id="PassEntropy" class="primary" value="Wykonaj" />
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-12 col-lg-6">
+                    <h2><span class="icon-edit"></span>Wynik:</h2>
+                    <form>
+                        <label>Konsola wynikowa
+                        <textarea class="doc" style="width: 99%; min-height: 350px;"></textarea></label>
+                        <input type="reset" class="secondary" value="Wyczyść wynik" />
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>Niniejsza strona powstała do celów badawczych - bezpieczeństwa szyfrowania danych za pomocą hasła typu numer PESEL.</p>
+            <p><strong>PESELsPasswordQuality</strong> was designed and built by <a href="https://github.com/mjus" target="_blank">@mjus</a>. Source code licensed under the <a href="https://github.com/mjus/PESELsPasswordQuality/blob/master/LICENSE">MIT License</a>.</p>
+        </footer>
+
+        <script src="js\PESELsPasswordQuality.js?v=0.1"></script>
+        <script src="js\page.js"></script>
+    </body>
+</html>
